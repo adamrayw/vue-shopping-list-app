@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 2 Learn Vue3</title>
+    <script src="https://unpkg.com/vue@3"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <div id="shopping-list">
+        <div class="header">
+            <h1>{{ header }}</h1>
+            <div>
+                <button v-if="editing" @click="doEdit(false)" class="cancel-button">Cancel</button>
+                <button v-else @click="doEdit(true)" class="add-new-button">Add new Item</button>
+            </div>
+        </div>
+        <div v-if="editing" class="add-item-form">
+            <input type="text" 
+            @keyup.enter="addNewItem(newItem, newItemHighPriority)" 
+            v-model="newItem" placeholder="Add an Item">
+            <label>
+                <input type="checkbox" v-model="newItemHighPriority"> 
+                High Priority
+            </label>
+            <button 
+                @click="addNewItem(newItem, newItemHighPriority)"
+                class="btn btn-primary"
+                :disabled="newItem.length == 0">
+                Save Item
+            </button>
+        </div>
+        {{ errorMsg }}
+        <br>
+        <p v-if="items.length == 0">No Items</p>
+        <ul>
+            <li 
+
+                :class="{strikeout: item.purchased, priority: item.highPriority}" 
+                v-for="(item, index) in items" 
+                :key="item.id">
+                <div class="items">
+                    <p @click="togglePurchased(item)">{{ item.label }}</p>
+                    <button @click="deleteItem(index)">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                    </button>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
